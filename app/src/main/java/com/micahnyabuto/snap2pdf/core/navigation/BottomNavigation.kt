@@ -17,19 +17,19 @@ enum class BottomNavigation (
         label = "Home",
         selectedIcon = Icons.Filled.Home,
         unselectedIcon = Icons.Filled.Home,
-        route = ""
+        route = Destinations.Home.route
     ),
     History(
         label = "Home",
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Filled.History,
-        route = ""
+        route = Destinations.History.route
     ),
     Settings(
         label = "Home",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Filled.Settings,
-        route = ""
+        route = Destinations.Settings.route
     ),
 
 
