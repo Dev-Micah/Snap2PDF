@@ -1,12 +1,15 @@
 package com.micahnyabuto.snap2pdf.features.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -47,6 +50,17 @@ fun HomeScreenContent(){
                     }
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {},
+                modifier = Modifier.padding(bottom = 80.dp),
+                shape = RoundedCornerShape(100.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.CameraAlt,
+                    contentDescription = "Snap"
+                )
+            }
         }
     ){
 
