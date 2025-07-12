@@ -12,6 +12,7 @@ import com.micahnyabuto.snap2pdf.features.settings.SettingsScreen
 
 @Composable
 fun AppNavHost(
+    modifier: Modifier= Modifier,
     navController: NavHostController
 ){
     NavHost(
