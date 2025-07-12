@@ -31,7 +31,7 @@ fun HomeScreenContent(){
         topBar = {
             TopAppBar(
                 title = {
-                    Text("Scan2PDF",
+                    Text("Snap2PDF",
                         fontWeight = FontWeight.Bold)
                 },
                 actions = {
