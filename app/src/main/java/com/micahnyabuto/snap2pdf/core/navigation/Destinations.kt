@@ -5,4 +5,5 @@ sealed class Destinations(val route: String){
     object History: Destinations("history")
     object Settings: Destinations("settings")
     object Profile: Destinations("profile")
+    object Splash: Destinations("splash")
 }
