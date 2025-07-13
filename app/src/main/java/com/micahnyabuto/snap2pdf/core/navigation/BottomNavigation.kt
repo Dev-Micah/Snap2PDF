@@ -2,6 +2,7 @@ package com.micahnyabuto.snap2pdf.core.navigation
 
 import android.media.Image
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -20,17 +21,22 @@ enum class BottomNavigation (
         route = Destinations.Home.route
     ),
     History(
-        label = "Home",
+        label = "History",
         selectedIcon = Icons.Filled.History,
         unselectedIcon = Icons.Filled.History,
         route = Destinations.History.route
     ),
+    Files(
+        label = "Files",
+        selectedIcon = Icons.Filled.Article,
+        unselectedIcon= Icons.Filled.Article,
+        route= Destinations.Files.route
+    ),
     Settings(
-        label = "Home",
+        label = "Settings",
         selectedIcon = Icons.Filled.Settings,
         unselectedIcon = Icons.Filled.Settings,
         route = Destinations.Settings.route
-    ),
-
+    )
 
 }
