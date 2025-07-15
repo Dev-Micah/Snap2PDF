@@ -44,74 +44,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Snap2PDFTheme {
-                val navController = rememberNavController()
-                val navBackStackEntry by navController.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-                    ?: Destinations.Splash::class.qualifiedName.orEmpty()
-                val showBottomNavigation = currentRoute !in listOf(
-                    Destinations.Splash::class.qualifiedName,
-
-
-                    )
-                Scaffold(
-                    modifier = Modifier.fillMaxSize(),
-                    contentWindowInsets = WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal),
-                    bottomBar = {
-                        if (showBottomNavigation) {
-                            Column {
-                                HorizontalDivider(thickness = 1.dp)
-                                NavigationBar(
-                                    tonalElevation = 0.dp,
-                                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                                ) {
-                                    BottomNavigation.entries.forEachIndexed { index, navigationItem ->
-                                        val isSelected by remember(currentRoute) {
-                                            derivedStateOf { currentRoute == navigationItem.route }
-                                        }
-
-                                        NavigationBarItem(
-                                            selected = isSelected,
-                                            onClick = {
-                                                navController.navigate(navigationItem.route)
-                                            },
-                                            icon = {
-                                                Icon(
-                                                    imageVector = if (isSelected) navigationItem.selectedIcon else navigationItem.unselectedIcon,
-                                                    contentDescription = navigationItem.label,
-                                                    modifier = Modifier.size(24.dp)
-                                                )
-                                            },
-                                            label = {
-                                                Text(
-                                                    text = navigationItem.label,
-                                                    fontSize = 10.sp,
-                                                    fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                                                )
-                                            },
-                                            colors = NavigationBarItemDefaults.colors(
-                                                indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
-                                                    elevation = 0.dp
-                                                ),
-                                                selectedIconColor = MaterialTheme.colorScheme.primary,
-                                                selectedTextColor = MaterialTheme.colorScheme.primary,
-                                                unselectedIconColor = MaterialTheme.colorScheme.onSurface,
-                                                unselectedTextColor = MaterialTheme.colorScheme.onSurface
-                                            )
-                                        )
-                                    }
-                                }
-
-                            }
-                        }
-                    }
-                ){innerpadding ->
-                    AppNavHost(
-                        modifier = Modifier.padding(innerpadding),
-                        navController = navController
-                    )
+                    AppNavHost()
                 }
             }
         }
-    }
 }
 

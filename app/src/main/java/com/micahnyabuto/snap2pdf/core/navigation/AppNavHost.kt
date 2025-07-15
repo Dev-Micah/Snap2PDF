@@ -2,13 +2,13 @@ package com.micahnyabuto.snap2pdf.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.micahnyabuto.snap2pdf.features.files.FilesScreen
 import com.micahnyabuto.snap2pdf.features.history.HistoryScreen
 import com.micahnyabuto.snap2pdf.features.home.HomeScreen
+import com.micahnyabuto.snap2pdf.features.search.SearchScreen
 import com.micahnyabuto.snap2pdf.features.settings.SettingsScreen
 
 @Composable
@@ -22,7 +22,7 @@ fun AppNavHost(
         startDestination = Destinations.Home.route
     ){
         composable(Destinations.Home.route){
-            HomeScreen()
+            HomeScreen(navController=navController)
         }
         composable(Destinations.History.route){
             HistoryScreen()
@@ -32,6 +32,11 @@ fun AppNavHost(
         }
         composable(Destinations.Files.route){
             FilesScreen()
+        }
+        composable(Destinations.Search.route){
+            SearchScreen(
+                navController=navController
+            )
         }
     }
 }
