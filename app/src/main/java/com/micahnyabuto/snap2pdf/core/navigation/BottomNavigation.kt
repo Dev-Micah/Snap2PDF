@@ -29,8 +29,8 @@ enum class BottomNavigation (
     ),
     Files(
         label = "Files",
-        selectedIcon = Icons.Default.FileOpen,
-        unselectedIcon= Icons.Default.FileOpen,
+        selectedIcon = Icons.Default.Article,
+        unselectedIcon= Icons.Default.Article,
         route= Destinations.Files.route
     ),
     Settings(
