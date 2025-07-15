@@ -3,6 +3,7 @@ package com.micahnyabuto.snap2pdf.core.navigation
 import android.media.Image
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Article
+import androidx.compose.material.icons.filled.FileOpen
 import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
@@ -28,8 +29,8 @@ enum class BottomNavigation (
     ),
     Files(
         label = "Files",
-        selectedIcon = Icons.Filled.Article,
-        unselectedIcon= Icons.Filled.Article,
+        selectedIcon = Icons.Default.FileOpen,
+        unselectedIcon= Icons.Default.FileOpen,
         route= Destinations.Files.route
     ),
     Settings(
