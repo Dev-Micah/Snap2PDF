@@ -41,17 +41,25 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.micahnyabuto.snap2pdf.R
+import com.micahnyabuto.snap2pdf.core.navigation.Destinations
 import com.micahnyabuto.snap2pdf.utils.Greeting
 
 @Composable
-fun HomeScreen(){
-    HomeScreenContent()
+fun HomeScreen(
+    navController: NavController
+){
+    HomeScreenContent(
+        navController=navController
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreenContent(){
+fun HomeScreenContent(
+    navController: NavController
+){
     var text by remember { mutableStateOf("") }
     val isDarkMode = isSystemInDarkTheme()
     val textColor = if (isDarkMode) Color.DarkGray else Color.LightGray
@@ -63,7 +71,7 @@ fun HomeScreenContent(){
 
                 },
                 actions = {
-                    IconButton(onClick = {}) {
+                    IconButton(onClick = {navController.navigate(Destinations.Search.route)}) {
                         Icon(
                             imageVector = Icons.Default.Search,
                             contentDescription = "search file",
@@ -83,18 +91,6 @@ fun HomeScreenContent(){
                 }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(onClick = {},
-                modifier = Modifier.padding(bottom = 80.dp),
-                shape = RoundedCornerShape(100.dp),
-                containerColor = MaterialTheme.colorScheme.primary
-            ) {
-                Icon(
-                    imageVector = Icons.Default.CameraAlt,
-                    contentDescription = "Snap"
-                )
-            }
-        }
     ){
 
     }
