@@ -11,16 +11,31 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.micahnyabuto.snap2pdf.core.navigation.Destinations
 import com.micahnyabuto.snap2pdf.R
+import kotlinx.coroutines.delay
 
 @Composable
-fun SplashScreen(){
+fun SplashScreen(
+    navController: NavController
+){
+    LaunchedEffect(Unit) {
+        delay(2500L)
+        navController.navigate(Destinations.Main.route) {
+            popUpTo(Destinations.Splash.route) {
+                inclusive = true
+            }
+        }
+    }
+
     Box(
         modifier = Modifier.fillMaxSize()
             .background(MaterialTheme.colorScheme.primary),
@@ -46,8 +61,3 @@ fun SplashScreen(){
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun SplashScreenView(){
-    SplashScreen()
-}
