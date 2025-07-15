@@ -10,5 +10,9 @@ sealed class Destinations(val route: String){
 
     object Splash: Destinations("splash")
 
+    object Search: Destinations("search")
+
+    object Main: Destinations("main")
+
     object Profile: Destinations("profile")
 }
