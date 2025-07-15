@@ -1,13 +1,20 @@
 package com.micahnyabuto.snap2pdf.core.navigation
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -50,36 +58,43 @@ fun MainNavGraph(){
         contentWindowInsets = WindowInsets.navigationBars.only(WindowInsetsSides.Horizontal),
         bottomBar = {
             if (showBottomNavigation) {
-                Column {
-                    HorizontalDivider(thickness = 1.dp)
+                Box {
+                    // Bottom Bar with two sides
                     NavigationBar(
-                        tonalElevation = 0.dp,
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ) {
-                        BottomNavigation.entries.forEachIndexed { index, navigationItem ->
-                            val isSelected by remember(currentRoute) {
-                                derivedStateOf { currentRoute == navigationItem.route }
-                            }
-
+                        // Left side items
+                        BottomNavigation.entries.take(2).forEach { navigationItem ->
                             NavigationBarItem(
-                                selected = isSelected,
-                                onClick = {
-                                    navController.navigate(navigationItem.route)
-                                },
+                                selected = currentRoute == navigationItem.route,
+                                onClick = { navController.navigate(navigationItem.route) },
+                            colors = NavigationBarItemDefaults.colors(
+                                indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
+                                    elevation = 0.dp
+                                ),
+                                selectedIconColor = MaterialTheme.colorScheme.primary,
+                                selectedTextColor = MaterialTheme.colorScheme.primary,
+                                unselectedIconColor = MaterialTheme.colorScheme.onSurface,
+                                unselectedTextColor = MaterialTheme.colorScheme.onSurface
+                            ),
                                 icon = {
                                     Icon(
-                                        imageVector = if (isSelected) navigationItem.selectedIcon else navigationItem.unselectedIcon,
+                                        imageVector = navigationItem.unselectedIcon,
                                         contentDescription = navigationItem.label,
                                         modifier = Modifier.size(24.dp)
                                     )
                                 },
-                                label = {
-                                    Text(
-                                        text = navigationItem.label,
-                                        fontSize = 10.sp,
-                                        fontWeight = if (isSelected) FontWeight.SemiBold else FontWeight.Normal
-                                    )
-                                },
+                                label = { Text(navigationItem.label, fontSize = 10.sp) }
+                            )
+                        }
+
+                        Spacer(Modifier.weight(1f))
+
+                        // Right side items
+                        BottomNavigation.entries.takeLast(2).forEach { navigationItem ->
+                            NavigationBarItem(
+                                selected = currentRoute == navigationItem.route,
+                                onClick = { navController.navigate(navigationItem.route) },
                                 colors = NavigationBarItemDefaults.colors(
                                     indicatorColor = MaterialTheme.colorScheme.surfaceColorAtElevation(
                                         elevation = 0.dp
@@ -88,14 +103,36 @@ fun MainNavGraph(){
                                     selectedTextColor = MaterialTheme.colorScheme.primary,
                                     unselectedIconColor = MaterialTheme.colorScheme.onSurface,
                                     unselectedTextColor = MaterialTheme.colorScheme.onSurface
-                                )
+                                ),
+                                icon = {
+                                    Icon(
+                                        imageVector = navigationItem.unselectedIcon,
+                                        contentDescription = navigationItem.label,
+                                        modifier = Modifier.size(24.dp)
+                                    )
+                                },
+                                label = { Text(navigationItem.label, fontSize = 10.sp) }
                             )
                         }
                     }
 
+                    FloatingActionButton(
+                        onClick = { /* do something */ },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .offset(y = (-2).dp),
+
+                        shape = RoundedCornerShape(50.dp)
+                    ) {
+                        Icon(Icons.Default.CameraAlt, contentDescription = "Snap")
+                    }
                 }
+
             }
         }
+
     ){innerpadding->
         NavHost(
             navController =navController,
