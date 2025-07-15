@@ -2,41 +2,26 @@ package com.micahnyabuto.snap2pdf.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.micahnyabuto.snap2pdf.features.files.FilesScreen
-import com.micahnyabuto.snap2pdf.features.history.HistoryScreen
-import com.micahnyabuto.snap2pdf.features.home.HomeScreen
-import com.micahnyabuto.snap2pdf.features.search.SearchScreen
-import com.micahnyabuto.snap2pdf.features.settings.SettingsScreen
+import androidx.navigation.compose.rememberNavController
+import com.micahnyabuto.snap2pdf.features.splash.SplashScreen
 
 @Composable
-fun AppNavHost(
-    modifier: Modifier= Modifier,
-    navController: NavHostController
-){
+fun AppNavHost(){
+    val navController = rememberNavController()
     NavHost(
         modifier = Modifier,
         navController = navController,
-        startDestination = Destinations.Home.route
+        startDestination = Destinations.Splash.route
     ){
-        composable(Destinations.Home.route){
-            HomeScreen(navController=navController)
+
+        composable(Destinations.Splash.route){
+            SplashScreen(navController=navController)
         }
-        composable(Destinations.History.route){
-            HistoryScreen()
+        composable(Destinations.Main.route){
+            MainNavGraph()
         }
-        composable(Destinations.Settings.route){
-            SettingsScreen()
-        }
-        composable(Destinations.Files.route){
-            FilesScreen()
-        }
-        composable(Destinations.Search.route){
-            SearchScreen(
-                navController=navController
-            )
-        }
+
     }
 }
