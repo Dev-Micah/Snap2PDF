@@ -8,6 +8,7 @@ sealed class Destinations(val route: String){
 
     object Files: Destinations("files")
 
+    object Snap: Destinations("snap")
     object Splash: Destinations("splash")
 
     object Search: Destinations("search")
@@ -15,4 +16,7 @@ sealed class Destinations(val route: String){
     object Main: Destinations("main")
 
     object Profile: Destinations("profile")
+
+    object Preview: Destinations("preview/{uri}")
+
 }
