@@ -55,6 +55,7 @@ fun SplashScreen(
             )
             Text(
                 "Snap2PDF",
+                color = MaterialTheme.colorScheme.onPrimary,
                 style = MaterialTheme.typography.titleLarge
             )
         }
