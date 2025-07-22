@@ -20,22 +20,27 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.FileCopy
 import androidx.compose.material.icons.filled.FileUpload
+import androidx.compose.material.icons.filled.FlashOn
 import androidx.compose.material.icons.filled.GridOn
 import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -132,6 +137,12 @@ fun CameraPreviewScreen(
                     }
                 },
                 actions = {
+                    IconButton(onClick = {}) {
+                        Icon(
+                            imageVector = Icons.Default.FlashOn,
+                            contentDescription = "flash"
+                        )
+                    }
                     OutlinedButton(onClick = {
                         cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
                     }) {
@@ -167,7 +178,13 @@ fun CameraPreviewScreen(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
 
             ){
-                  CategoryRow()
+                HorizontalTextButtons(
+                    items = listOf("To Word", "To PDF", "Filter Image", "Smart Erase"),
+                    onItemClick = { selected ->
+                        println("Selected: $selected")
+                    }
+                )
+
 
             }
 
@@ -289,16 +306,31 @@ fun BottomBarButtons(
 }
 
 @Composable
-fun CategoryRow(){
-    val categories = listOf("To word", "To pdf", "Filter Image")
+fun HorizontalTextButtons(
+    items: List<String>,
+    modifier: Modifier = Modifier,
+    onItemClick: (String) -> Unit
+) {
+    var selectedItem by remember { mutableStateOf<String?>(null) }
 
-    categories.forEach{category ->
-        TextButton(onClick = {
-
-        },
-            modifier = Modifier.padding(4.dp),){
-            Text(text = category)
-
+    LazyRow(
+        modifier = modifier,
+        contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(items) { item ->
+            val isSelected = item == selectedItem
+            TextButton(
+                onClick = {
+                    selectedItem = item
+                    onItemClick(item)
+                }
+            ) {
+                Text(
+                    text = item,
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
