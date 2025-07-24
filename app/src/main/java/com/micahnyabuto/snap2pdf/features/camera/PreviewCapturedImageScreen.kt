@@ -1,64 +1,87 @@
 package com.micahnyabuto.snap2pdf.features.camera
 
 import android.net.Uri
-import androidx.compose.foundation.background
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.automirrored.filled.RotateLeft
-import androidx.compose.material.icons.automirrored.filled.RotateRight
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.CropFree
+import androidx.compose.material.icons.filled.Crop
 import androidx.compose.material.icons.filled.RotateLeft
 import androidx.compose.material.icons.filled.RotateRight
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageContractOptions
+import com.canhub.cropper.CropImageOptions
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PreviewCapturedImageScreen(uri: Uri, navController: NavController) {
+
+    val context = LocalContext.current
+    var rotationDegrees by remember { mutableStateOf(0f) }
+    var currentUri by remember { mutableStateOf(uri) }
+
+    // ✅ CanHub Cropper Launcher
+    val cropLauncher = rememberLauncherForActivityResult(
+        contract = CropImageContract()
+    ) { result ->
+        if (result.isSuccessful) {
+            val uriContent = result.uriContent
+            if (uriContent != null) {
+                currentUri = uriContent
+            }
+        } else {
+            val exception = result.error
+            exception?.printStackTrace()
+        }
+    }
+
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crop") },
+                title = { Text("Edit Image") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBackIos, contentDescription = "Close")
+                        Icon(Icons.Default.ArrowBackIos, contentDescription = "Back")
                     }
                 }
             )
         },
         bottomBar = {
-
             CropBottomBar(
-                onRotateLeft = { /* TODO: rotate left */ },
-                onRotateRight = { /* TODO: rotate right */ },
-                onSelectAll = { /* TODO: select all */ },
-                onNext = { /* TODO: next action */ },
+                onRotateLeft = { rotationDegrees -= 90f },
+                onRotateRight = { rotationDegrees += 90f },
+                onSelectCrop = {
+                    cropLauncher.launch(
+                        CropImageContractOptions(
+                            uri = currentUri,
+                            cropImageOptions = CropImageOptions().apply {
+                                aspectRatioX = 1
+                                aspectRatioY = 1
+                                fixAspectRatio = true
+                                outputCompressQuality = 90
+                            }
+                        )
+                    )
+                },
+                onNext = {
+                    // TODO: Implement your NEXT action here
+                }
             )
         }
     ) { innerPadding ->
@@ -69,14 +92,13 @@ fun PreviewCapturedImageScreen(uri: Uri, navController: NavController) {
             contentAlignment = Alignment.Center
         ) {
             AsyncImage(
-                model = uri,
-                contentDescription = "Captured Image"
+                model = currentUri,
+                contentDescription = "Preview Image",
+                modifier = Modifier.graphicsLayer(
+                    rotationZ = rotationDegrees
+                )
             )
-
-
         }
-
-
     }
 }
 
@@ -84,15 +106,14 @@ fun PreviewCapturedImageScreen(uri: Uri, navController: NavController) {
 fun CropBottomBar(
     onRotateLeft: () -> Unit,
     onRotateRight: () -> Unit,
-    onSelectAll: () -> Unit,
+    onSelectCrop: () -> Unit,
     onNext: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            //.background(MaterialTheme.colorScheme.onSurfaceVariant)
-            .padding(vertical = 8.dp, horizontal = 40.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .padding(vertical = 8.dp, horizontal = 60.dp),
+        horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
         CropBarButton(
@@ -106,9 +127,9 @@ fun CropBottomBar(
             onClick = onRotateRight
         )
         CropBarButton(
-            icon = Icons.Default.CropFree,
-            label = "All",
-            onClick = onSelectAll
+            icon = Icons.Default.Crop,
+            label = "Crop",
+            onClick = onSelectCrop
         )
         CropBarButton(
             icon = Icons.Default.ArrowForward,
