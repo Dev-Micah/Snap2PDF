@@ -102,7 +102,11 @@ dependencies {
 
     //camera
     implementation("androidx.camera:camera-camera2:1.4.2")
-    implementation("androidx.camera:camera-view:1.0.0")
+    implementation("androidx.camera:camera-view:1.4.2")
+
+    //crop
+    implementation("com.vanniktech:android-image-cropper:4.6.0")
+
 
 
 }
