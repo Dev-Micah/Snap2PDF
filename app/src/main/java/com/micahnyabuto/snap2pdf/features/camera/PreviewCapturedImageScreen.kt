@@ -33,7 +33,7 @@ import com.canhub.cropper.CropImageOptions
 fun PreviewCapturedImageScreen(uri: Uri, navController: NavController) {
 
     val context = LocalContext.current
-    var rotationDegrees by remember { mutableStateOf(0f) }
+    var rotationDegrees by remember { mutableFloatStateOf(0f) }
     var currentUri by remember { mutableStateOf(uri) }
 
     // ✅ CanHub Cropper Launcher
