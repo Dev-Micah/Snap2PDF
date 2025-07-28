@@ -78,6 +78,7 @@ fun CameraPreviewScreen(
     navController: NavController,
     onImageCaptured: (Uri) -> Unit
 ) {
+
     val context = LocalContext.current
     val cameraExecutor = remember { Executors.newSingleThreadExecutor() }
     val previewView = remember { PreviewView(context) }
