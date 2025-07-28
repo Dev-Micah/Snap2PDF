@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.Flow
 interface DocumentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(document: Document)
-
     @Delete
     suspend fun delete(document: Document)
 
