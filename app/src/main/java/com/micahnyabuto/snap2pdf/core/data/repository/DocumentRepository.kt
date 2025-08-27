@@ -8,7 +8,7 @@ interface DocumentRepository {
     suspend fun addDocument(document: Document)
     suspend fun deleteDocument(document: Document)
 
-    fun allDocuments(document: Document): Flow<List<Document>>
+    fun allDocuments(): Flow<List<Document>>
 }
 
 class DocumentRepositoryImpl(private val dao: DocumentDao): DocumentRepository{
@@ -21,5 +21,5 @@ class DocumentRepositoryImpl(private val dao: DocumentDao): DocumentRepository{
         dao.delete(document)
     }
 
-    override fun allDocuments(document: Document): Flow<List<Document>> = dao.allDocuments()
+    override fun allDocuments(): Flow<List<Document>> = dao.getAllDocuments()
 }
