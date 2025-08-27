@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
+import com.micahnyabuto.snap2pdf.core.data.local.Document
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -46,6 +47,15 @@ object FileUtils {
 
         return targetUri
     }
+
+    fun Context.shareDocument(document: Document) {
+        val intent = Intent(Intent.ACTION_SEND).apply {
+            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, document.uri)
+        }
+        startActivity(Intent.createChooser(intent, "Share via"))
+    }
+
     fun formatTimestamp(timestamp: Long): String {
         val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
         return sdf.format(Date(timestamp))
