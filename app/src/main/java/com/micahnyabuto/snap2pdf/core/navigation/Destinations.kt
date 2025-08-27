@@ -2,7 +2,8 @@ package com.micahnyabuto.snap2pdf.core.navigation
 
 sealed class Destinations(val route: String){
     object Home: Destinations("home")
-    object History: Destinations("history")
+
+    object Save: Destinations("save")
 
     object Settings: Destinations("settings")
 
@@ -18,5 +19,9 @@ sealed class Destinations(val route: String){
     object Profile: Destinations("profile")
 
     object Preview: Destinations("preview/{uri}")
+
+    object Crop: Destinations("crop?uri={uri}")
+
+    object Convert: Destinations("convert")
 
 }
