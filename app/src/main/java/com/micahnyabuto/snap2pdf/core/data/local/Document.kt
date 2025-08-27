@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "documents")
 data class Document(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int= 0,
     val name: String,
     val uri: String,
     val createdAt: Long = System.currentTimeMillis()
