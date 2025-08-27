@@ -14,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
 import com.micahnyabuto.snap2pdf.MainActivity
-import com.micahnyabuto.snap2pdf.core.data.local.Document
 import com.micahnyabuto.snap2pdf.features.scanner.ScannerViewModel
 import com.micahnyabuto.snap2pdf.features.splash.SplashScreen
 import org.koin.androidx.compose.koinViewModel
@@ -52,10 +51,10 @@ fun AppNavHost(
         composable(Destinations.Main.route){
             MainNavGraph(
                 scannerLauncher = scannerLauncher,
-                pdfUri = pdfUri,
-                imageUris = imageUris,
                 activity = activity,
                 scannerViewModel = scannerViewModel,
+                pdfUri = pdfUri,
+                imageUris = imageUris
             )
         }
 

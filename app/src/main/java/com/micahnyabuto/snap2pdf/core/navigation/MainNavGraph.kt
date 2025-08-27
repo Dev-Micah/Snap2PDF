@@ -1,5 +1,6 @@
 package com.micahnyabuto.snap2pdf.core.navigation
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import android.os.Build
@@ -41,6 +42,7 @@ import com.micahnyabuto.snap2pdf.features.settings.SettingsScreen
 import org.koin.androidx.compose.koinViewModel
 
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MainNavGraph(

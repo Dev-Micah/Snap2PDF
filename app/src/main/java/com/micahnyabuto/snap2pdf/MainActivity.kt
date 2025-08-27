@@ -7,7 +7,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import com.micahnyabuto.snap2pdf.core.data.local.Document
 import com.micahnyabuto.snap2pdf.core.navigation.AppNavHost
 import com.micahnyabuto.snap2pdf.ui.theme.Snap2PDFTheme
 
