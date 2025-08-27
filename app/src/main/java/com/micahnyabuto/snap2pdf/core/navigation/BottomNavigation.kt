@@ -21,12 +21,6 @@ enum class BottomNavigation (
         unselectedIcon = Icons.Filled.Home,
         route = Destinations.Home.route
     ),
-    History(
-        label = "History",
-        selectedIcon = Icons.Filled.History,
-        unselectedIcon = Icons.Filled.History,
-        route = Destinations.History.route
-    ),
     Files(
         label = "Files",
         selectedIcon = Icons.Default.Article,
