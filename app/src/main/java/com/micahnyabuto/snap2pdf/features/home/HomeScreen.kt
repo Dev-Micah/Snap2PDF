@@ -1,6 +1,7 @@
 package com.micahnyabuto.snap2pdf.features.home
 
 import android.app.Activity
+import android.content.Intent
 import android.net.Uri
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -21,21 +22,22 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.MoreVert
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -110,17 +112,17 @@ fun HomeScreen(
                     IconButton(onClick = { navController.navigate(Destinations.Search.route) }) {
                         Icon(Icons.Default.Search, contentDescription = "Search", modifier = Modifier.size(28.dp))
                     }
-                    IconButton(onClick = {}) {
-                        Icon(
-                            Icons.Default.Person,
-                            contentDescription = "Profile",
-                            tint = Color.Black,
-                            modifier = Modifier
-                                .size(35.dp)
-                                .clip(CircleShape)
-                                .background(Color.LightGray)
-                        )
-                    }
+//                    IconButton(onClick = {}) {
+//                        Icon(
+//                            Icons.Default.Person,
+//                            contentDescription = "Profile",
+//                            tint = Color.Black,
+//                            modifier = Modifier
+//                                .size(35.dp)
+//                                .clip(CircleShape)
+//                                .background(Color.LightGray)
+//                        )
+//                    }
                 }
             )
         },
@@ -187,7 +189,10 @@ fun HomeScreen(
                         shape = RoundedCornerShape(0.dp),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(100.dp)
+                            .height(100.dp),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.surface
+                        )
                     ) {
                         Row(modifier = Modifier.padding(12.dp)) {
                             AsyncImage(
@@ -204,7 +209,7 @@ fun HomeScreen(
                             Column(modifier = Modifier.weight(1f)) {
                                 Text(
                                     text = doc.name,
-                                    style = MaterialTheme.typography.titleMedium
+                                    style = MaterialTheme.typography.titleSmall,
                                 )
                                 Text(
                                     text = FileUtils.formatTimestamp(doc.createdAt),
@@ -212,10 +217,54 @@ fun HomeScreen(
                                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
                                 )
                             }
+                            Box {
+                                IconButton(onClick = { expandedDocId =doc.uri}) { // use doc.id or uri
+                                    Icon(Icons.Default.MoreVert, contentDescription = "More options")
+                                }
 
+                                DropdownMenu(
+                                    expanded = expandedDocId == doc.uri,
+                                    onDismissRequest = { expandedDocId = null }
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text("Share") },
+                                        onClick = {
+                                            expandedDocId = null
+                                            // share logic
+                                            val uri = Uri.parse(doc.uri)
+                                            // Create intent
+                                            val shareIntent = Intent(Intent.ACTION_SEND).apply {
+                                                type = "application/pdf" // since your doc is PDF
+                                                putExtra(Intent.EXTRA_STREAM, uri)
+                                                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                                            }
+                                            context.startActivity(Intent.createChooser(shareIntent, "Share PDF"))
 
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Delete") },
+                                        onClick = {
+                                            expandedDocId = null
+                                            documentViewModel.deleteDocument(doc)
+                                        },
+                                        leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) }
+                                    )
+                                    DropdownMenuItem(
+                                        text = { Text("Star") },
+                                        onClick = { expandedDocId = null },
+                                        leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) }
+                                    )
+                                }
                             }
+
+
+
                         }
+
+                        }
+                    HorizontalDivider()
                         }
                     }
                 }
@@ -236,52 +285,4 @@ fun EmptyScreen(){
     }
 }
 
-@Composable
-fun DocumentRow(
-    doc: Document,
-    isExpanded: Boolean,
-    onExpand: () -> Unit,
-    onDismiss: () -> Unit,
-    onDelete: () -> Unit,
-    onShare: () -> Unit
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(doc.name)
-
-        Box {
-            IconButton(onClick = onExpand) {
-                Icon(Icons.Default.MoreVert, contentDescription = "Share and delete")
-            }
-
-            DropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = onDismiss
-            ) {
-                DropdownMenuItem(
-                    text = { Text("Delete") },
-                    onClick = {
-                        onDismiss()
-                        onDelete()
-                    },
-                    leadingIcon = {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete")
-                    }
-                )
-                DropdownMenuItem(
-                    text = { Text("Share") },
-                    onClick = {
-                        onDismiss()
-                        onShare()
-                    },
-                    leadingIcon = {
-                        Icon(Icons.Default.Share, contentDescription = "Share")
-                    }
-                )
-            }
-        }
-    }
-}
 
