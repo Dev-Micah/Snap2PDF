@@ -15,5 +15,5 @@ interface DocumentDao {
     suspend fun delete(document: Document)
 
     @Query("SELECT * FROM documents ORDER BY CreatedAt DESC")
-    fun allDocuments(): Flow<List<Document>>
+    fun getAllDocuments(): Flow<List<Document>>
 }
