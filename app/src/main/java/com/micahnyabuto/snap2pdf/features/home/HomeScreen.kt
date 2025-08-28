@@ -3,11 +3,6 @@ package com.micahnyabuto.snap2pdf.features.home
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.IntentSenderRequest
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,18 +20,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -59,10 +51,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanning
-import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult
-import com.micahnyabuto.snap2pdf.core.data.local.Document
 import com.micahnyabuto.snap2pdf.core.navigation.Destinations
 import com.micahnyabuto.snap2pdf.features.scanner.ScannerViewModel
 import com.micahnyabuto.snap2pdf.utils.FileUtils
@@ -74,7 +62,6 @@ import org.koin.androidx.compose.koinViewModel
 fun HomeScreen(
     navController: NavController,
     activity: Activity,
-    scannerLauncher: ActivityResultLauncher<IntentSenderRequest>,
     scannerViewModel: ScannerViewModel = koinViewModel(),
     documentViewModel: DocumentViewModel = koinViewModel()
 ) {
@@ -86,19 +73,6 @@ fun HomeScreen(
     var expandedDocId by remember { mutableStateOf<String?>(null) }
 
 
-    //scannerLauncher
-    val scannerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartIntentSenderForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val scanResult = GmsDocumentScanningResult.fromActivityResultIntent(result.data)
-            val imageUris = scanResult?.pages?.mapNotNull { it.imageUri } ?: emptyList()
-            val pdfUri = scanResult?.pdf?.uri
-
-            scannerViewModel.setScanResults(pdfUri, imageUris)
-            navController.navigate(Destinations.Save.route)
-        }
-    }
 
     LaunchedEffect(Unit) {
         documentViewModel.loadDocuments()
@@ -112,48 +86,9 @@ fun HomeScreen(
                     IconButton(onClick = { navController.navigate(Destinations.Search.route) }) {
                         Icon(Icons.Default.Search, contentDescription = "Search", modifier = Modifier.size(28.dp))
                     }
-//                    IconButton(onClick = {}) {
-//                        Icon(
-//                            Icons.Default.Person,
-//                            contentDescription = "Profile",
-//                            tint = Color.Black,
-//                            modifier = Modifier
-//                                .size(35.dp)
-//                                .clip(CircleShape)
-//                                .background(Color.LightGray)
-//                        )
-//                    }
                 }
             )
         },
-        floatingActionButton = {
-            FloatingActionButton(
-                onClick = {
-                    val options = GmsDocumentScannerOptions.Builder()
-                        .setGalleryImportAllowed(true)
-                        .setPageLimit(5)
-                        .setResultFormats(GmsDocumentScannerOptions.RESULT_FORMAT_JPEG, GmsDocumentScannerOptions.RESULT_FORMAT_PDF)
-                        .setScannerMode(GmsDocumentScannerOptions.SCANNER_MODE_FULL)
-                        .build()
-
-                    val scanner = GmsDocumentScanning.getClient(options)
-                    scanner.getStartScanIntent(activity)
-                        .addOnSuccessListener { intentSender ->
-                            val request = IntentSenderRequest.Builder(intentSender).build()
-                            scannerLauncher.launch(request)
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "Scanner failed to launch", Toast.LENGTH_SHORT).show()
-                        }
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = RoundedCornerShape(50.dp),
-                modifier = Modifier.padding(10.dp)
-            ) {
-                Icon(Icons.Default.DocumentScanner, contentDescription = "Snap")
-            }
-        }
     ) { innerPadding ->
         when{
             uiState.isLoading -> {
@@ -161,7 +96,7 @@ fun HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ){
-                    CircularProgressIndicator()
+                    Text(text = "Loading...")
                 }
             }
             documentList.isEmpty() -> {
@@ -185,6 +120,10 @@ fun HomeScreen(
                         onClick = {
                             val uri = Uri.parse(doc.uri)
                             FileUtils.openPdf(context, uri)
+
+//                           val encodedUri = Uri.encode(doc.uri)
+//                            navController.navigate("viewer?uri=$encodedUri")
+
                         },
                         shape = RoundedCornerShape(0.dp),
                         modifier = Modifier
@@ -250,11 +189,6 @@ fun HomeScreen(
                                             documentViewModel.deleteDocument(doc)
                                         },
                                         leadingIcon = { Icon(Icons.Default.Delete, contentDescription = null) }
-                                    )
-                                    DropdownMenuItem(
-                                        text = { Text("Star") },
-                                        onClick = { expandedDocId = null },
-                                        leadingIcon = { Icon(Icons.Default.Star, contentDescription = null) }
                                     )
                                 }
                             }

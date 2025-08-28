@@ -18,12 +18,12 @@ enum class BottomNavigation (
         unselectedIcon = Icons.Filled.Home,
         route = Destinations.Home.route
     ),
-    Files(
-        label = "Files",
-        selectedIcon = Icons.Default.Article,
-        unselectedIcon= Icons.Default.Article,
-        route= Destinations.Files.route
-    ),
+//    Files(
+//        label = "Files",
+//        selectedIcon = Icons.Default.Article,
+//        unselectedIcon= Icons.Default.Article,
+//        route= Destinations.Files.route
+//    ),
     Settings(
         label = "Settings",
         selectedIcon = Icons.Filled.Settings,

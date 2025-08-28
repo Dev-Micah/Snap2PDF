@@ -16,12 +16,7 @@ sealed class Destinations(val route: String){
 
     object Main: Destinations("main")
 
-    object Profile: Destinations("profile")
 
-    object Preview: Destinations("preview/{uri}")
-
-    object Crop: Destinations("crop?uri={uri}")
-
-    object Convert: Destinations("convert")
+    object View: Destinations("view?uri={uri}")
 
 }

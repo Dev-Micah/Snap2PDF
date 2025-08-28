@@ -7,6 +7,7 @@ import com.micahnyabuto.snap2pdf.core.data.repository.DocumentRepository
 import com.micahnyabuto.snap2pdf.core.data.repository.DocumentRepositoryImpl
 import com.micahnyabuto.snap2pdf.features.home.DocumentViewModel
 import com.micahnyabuto.snap2pdf.features.scanner.ScannerViewModel
+import com.micahnyabuto.snap2pdf.features.settings.SettingsViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -27,4 +28,5 @@ val databaseModule = module {
 
     viewModel { DocumentViewModel(get()) }
     viewModel { ScannerViewModel() }
+    viewModel { SettingsViewModel(get()) }
 }
