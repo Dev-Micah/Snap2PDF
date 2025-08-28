@@ -109,6 +109,13 @@ dependencies {
 
     implementation("com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1")
 
+//    PDF Viewer
+//    implementation("com.github.barteksc:pdfium-android:1.9.0")
+
+    //datastore
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+
 
 
 }
