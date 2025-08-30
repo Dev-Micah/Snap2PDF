@@ -25,7 +25,6 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -72,6 +71,8 @@ fun HomeScreen(
 
     var expandedDocId by remember { mutableStateOf<String?>(null) }
 
+    var menuExpanded by remember { mutableStateOf(false) }
+
 
 
     LaunchedEffect(Unit) {
@@ -83,9 +84,21 @@ fun HomeScreen(
             TopAppBar(
                 title = { Greeting() },
                 actions = {
-                    IconButton(onClick = { navController.navigate(Destinations.Search.route) }) {
-                        Icon(Icons.Default.Search, contentDescription = "Search", modifier = Modifier.size(28.dp))
+                    IconButton(onClick = { menuExpanded = true }) {
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menu", modifier = Modifier.size(28.dp))
                     }
+                    DropdownMenu(
+                        expanded = menuExpanded,
+                        onDismissRequest = { menuExpanded = false },
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("Search") },
+                            onClick = { navController.navigate(Destinations.Search.route) },
+                            leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) }
+                        )
+
+                    }
+
                 }
             )
         },
