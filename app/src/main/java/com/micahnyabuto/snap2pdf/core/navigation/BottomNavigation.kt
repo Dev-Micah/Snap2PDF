@@ -4,6 +4,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Article
 import androidx.compose.material.icons.filled.FilePresent
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 
@@ -14,9 +15,9 @@ enum class BottomNavigation (
     val route : String
 ){
     Home(
-        label = "Home",
-        selectedIcon = Icons.Filled.FilePresent,
-        unselectedIcon = Icons.Filled.FilePresent,
+        label = "Files",
+        selectedIcon = Icons.Filled.PictureAsPdf,
+        unselectedIcon = Icons.Filled.PictureAsPdf,
         route = Destinations.Home.route
     ),
 //    Files(
