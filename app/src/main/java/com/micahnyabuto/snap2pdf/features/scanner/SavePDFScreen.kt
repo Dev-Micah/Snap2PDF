@@ -93,6 +93,7 @@ fun SavePDFScreen(
                             contentDescription = null,
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .width(200.dp)
                                 .height(200.dp)
                                 .padding(vertical = 8.dp)
                         )
