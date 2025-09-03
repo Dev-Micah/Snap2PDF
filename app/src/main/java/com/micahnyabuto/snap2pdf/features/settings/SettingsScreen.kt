@@ -1,14 +1,30 @@
 package com.micahnyabuto.snap2pdf.features.settings
 
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.NavigateNext
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.PrivacyTip
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -98,23 +114,42 @@ fun SettingsScreen(
                     }
                 }
             }
+            // Privacy
             SettingCard {
                 Row(
-                    modifier = Modifier.fillMaxWidth()
-                        .clickable {
-
-                        },
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("About Developer")
+                    Text("Data and privacy")
                     IconButton(
                         onClick = { /* Handle share action */ }
                     ) {
                         Icon(
-                            imageVector = Icons.Default.NavigateNext,
-                            contentDescription = "Developer Profile"
+                            imageVector = Icons.Default.PrivacyTip,
+                            contentDescription = "Privacy"
                         )
+                    }
+                }
+            }
+            SettingCard {
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                   Text("About Developer")
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    Row(
+                        modifier = Modifier.fillMaxWidth()
+                                           .padding(start =8.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        //horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        IconButton(onClick = {}) {
+                            Icon(imageVector = Icons.Default.Email, contentDescription = "Email")
+                        }
+                        Text("atembamicah@gmail.com")
                     }
                 }
             }
