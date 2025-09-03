@@ -2,7 +2,7 @@ package com.micahnyabuto.snap2pdf.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val PrimaryColor = Color(0xFFC13584)
+val PrimaryColor = Color(0xFFAECBFA)
 val PrimaryLightColor = PrimaryColor.copy(alpha = 0.75f)
 
 val SecondaryColor = Color(0xFFFF9800)
