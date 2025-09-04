@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -99,7 +101,8 @@ fun HomeScreen(
 
                     }
 
-                }
+                },
+                windowInsets = WindowInsets.statusBars // Explicitly set window insets
             )
         },
     ) { innerPadding ->
@@ -123,7 +126,7 @@ fun HomeScreen(
                     Text(text = "Error: ${uiState.error}")
                 }
             }else -> {
-        Column(modifier = Modifier.padding(innerPadding)) {
+        Column(modifier = Modifier.padding(innerPadding).fillMaxWidth()) {
             LazyColumn(
                 modifier = Modifier.padding(horizontal = 0.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(0.dp)
@@ -133,10 +136,6 @@ fun HomeScreen(
                         onClick = {
                             val uri = Uri.parse(doc.uri)
                             FileUtils.openPdf(context, uri)
-
-//                           val encodedUri = Uri.encode(doc.uri)
-//                            navController.navigate("viewer?uri=$encodedUri")
-
                         },
                         shape = RoundedCornerShape(0.dp),
                         modifier = Modifier
@@ -182,16 +181,13 @@ fun HomeScreen(
                                         text = { Text("Share") },
                                         onClick = {
                                             expandedDocId = null
-                                            // share logic
                                             val uri = Uri.parse(doc.uri)
-                                            // Create intent
                                             val shareIntent = Intent(Intent.ACTION_SEND).apply {
-                                                type = "application/pdf" // since your doc is PDF
+                                                type = "application/pdf"
                                                 putExtra(Intent.EXTRA_STREAM, uri)
                                                 addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                                             }
                                             context.startActivity(Intent.createChooser(shareIntent, "Share PDF"))
-
                                         },
                                         leadingIcon = { Icon(Icons.Default.Share, contentDescription = null) }
                                     )
@@ -205,20 +201,14 @@ fun HomeScreen(
                                     )
                                 }
                             }
-
-
-
                         }
-
-                        }
+                    }
                     HorizontalDivider()
                         }
                     }
                 }
             }
         }
-
-
     }
 }
 
