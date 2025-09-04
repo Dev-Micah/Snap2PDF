@@ -34,6 +34,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -53,6 +54,7 @@ import com.micahnyabuto.snap2pdf.features.scanner.SavePDFScreen
 import com.micahnyabuto.snap2pdf.features.scanner.ScannerViewModel
 import com.micahnyabuto.snap2pdf.features.search.SearchScreen
 import com.micahnyabuto.snap2pdf.features.settings.SettingsScreen
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -133,7 +135,7 @@ fun MainNavGraph(
                         // Spacer in the middle for FAB
                         FloatingActionButton(
                             onClick = {
-
+                                // Launch the scanner
                                 val options = GmsDocumentScannerOptions.Builder()
                                     .setGalleryImportAllowed(true)
                                     .setPageLimit(5)
