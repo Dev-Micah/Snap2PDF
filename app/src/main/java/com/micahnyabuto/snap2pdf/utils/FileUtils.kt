@@ -8,7 +8,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
-import com.micahnyabuto.snap2pdf.core.data.local.Document
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
