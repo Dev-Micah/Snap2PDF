@@ -18,16 +18,27 @@ class DocumentViewModel(private val repository: DocumentRepository) : ViewModel(
     val searchQuery: StateFlow<String> = _searchQuery
     val documents: StateFlow<List<Document>> = _documents
 
-    private val _uiState = MutableStateFlow(DocumentUiState())
+    private val _uiState = MutableStateFlow(DocumentUiState()) // isLoading will now default to true
 
     val uiState: StateFlow<DocumentUiState> = _uiState
 
 
     fun loadDocuments() {
         viewModelScope.launch {
+            // You might want to explicitly set isLoading = true here if it wasn't the default
+            // _uiState.value = _uiState.value.copy(isLoading = true)
             repository.allDocuments().collect { documentList ->
                 _documents.value = documentList
+                // After loading, update the uiState to reflect completion and data
+                _uiState.value = _uiState.value.copy(
+                    isLoading = false, 
+                    success = documentList, 
+                    empty = documentList.isEmpty(),
+                    error = null // Clear any previous error
+                )
             }
+            // TODO: Add error handling for the repository call, e.g., a catch block
+            // .catch { e -> _uiState.value = _uiState.value.copy(isLoading = false, error = e.message) }
         }
     }
 
@@ -37,14 +48,14 @@ class DocumentViewModel(private val repository: DocumentRepository) : ViewModel(
             repository.addDocument(
                 document = document
             )
-            loadDocuments()
+            loadDocuments() // This will refresh the state including isLoading updates
         }
     }
 
     fun deleteDocument(document: Document) {
         viewModelScope.launch {
             repository.deleteDocument(document)
-            loadDocuments()
+            loadDocuments() // This will refresh the state including isLoading updates
         }
     }
 
@@ -62,7 +73,7 @@ class DocumentViewModel(private val repository: DocumentRepository) : ViewModel(
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     data class DocumentUiState(
-        val isLoading: Boolean = false,
+        val isLoading: Boolean = true, // Changed default to true
         val success: List<Document> = emptyList(),
         val error: String? = null,
         val empty: Boolean = false
