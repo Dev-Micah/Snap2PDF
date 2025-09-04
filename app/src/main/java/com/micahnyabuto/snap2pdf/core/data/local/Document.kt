@@ -1,6 +1,5 @@
 package com.micahnyabuto.snap2pdf.core.data.local
 
-import androidx.room.ColumnInfo // Added import
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
