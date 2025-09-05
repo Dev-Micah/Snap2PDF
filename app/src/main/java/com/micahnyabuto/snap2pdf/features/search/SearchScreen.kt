@@ -4,9 +4,11 @@ package com.micahnyabuto.snap2pdf.features.search
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box // Added for centering the empty message
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize // Added for centering the empty message
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -93,18 +95,22 @@ fun SearchScreen(
         }
     ) { innerpadding ->
         Column(
-            modifier = Modifier.padding(innerpadding),
-            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .padding(innerpadding)
+                .fillMaxSize(), // Changed to fillMaxSize to allow centering of empty message
+            // Removed verticalArrangement = Arrangement.Center, as it might conflict with LazyColumn or Box placement
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
                 value = searchQuery,
                 onValueChange = { documentViewModel.updateSearchQuery(it) },
                 placeholder = { Text("Search for a file") },
-                modifier = Modifier.padding(
-                    top = 6.dp,
-                    start = 10.dp
-                )
+                modifier = Modifier
+                    .padding(
+                        top = 6.dp,
+                        start = 10.dp,
+                        end = 10.dp // Added end padding for consistency
+                    )
                     .fillMaxWidth()
                     .focusRequester(focusRequester),
                 shape = RoundedCornerShape(8.dp),
@@ -126,57 +132,67 @@ fun SearchScreen(
                 )
 
             )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp, vertical = 8.dp)
-            ) {
-                items(documentList) { document ->
-                    Card(
-                        onClick = {
-                            val uri = Uri.parse(document.uri)
-                            FileUtils.openPdf(context, uri)
-                        },
-                        shape = RoundedCornerShape(0.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp),
-                        colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.surface
-                        )
-                    ) {
-                        Row(modifier = Modifier.padding(12.dp)) {
-                            AsyncImage(
-                                model = document.uri,
-                                contentDescription = "Document thumbnail",
-                                modifier = Modifier
-                                    .size(64.dp)
-                                    .clip(RoundedCornerShape(8.dp))
-                                    .background(Color.LightGray)
-                            )
 
-                            Spacer(modifier = Modifier.width(12.dp))
-
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = document.name,
-                                    style = MaterialTheme.typography.titleSmall,
-                                )
-                                Text(
-                                    text = FileUtils.formatTimestamp(document.createdAt),
-                                    style = MaterialTheme.typography.bodySmall,
-                                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
-                                )
-                            }
-
-
-
-                        }
-
-                    }
-
+            if (searchQuery.isNotBlank() && documentList.isEmpty()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = "No files found",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                    )
                 }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 8.dp)
+                ) {
+                    items(documentList) { document ->
+                        Card(
+                            onClick = {
+                                val uri = Uri.parse(document.uri)
+                                FileUtils.openPdf(context, uri)
+                            },
+                            shape = RoundedCornerShape(0.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surface
+                            )
+                        ) {
+                            Row(modifier = Modifier.padding(12.dp)) {
+                                AsyncImage(
+                                    model = document.uri,
+                                    contentDescription = "Document thumbnail",
+                                    modifier = Modifier
+                                        .size(64.dp)
+                                        .clip(RoundedCornerShape(8.dp))
+                                        .background(Color.LightGray)
+                                )
 
+                                Spacer(modifier = Modifier.width(12.dp))
+
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = document.name,
+                                        style = MaterialTheme.typography.titleSmall,
+                                    )
+                                    Text(
+                                        text = FileUtils.formatTimestamp(document.createdAt),
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
