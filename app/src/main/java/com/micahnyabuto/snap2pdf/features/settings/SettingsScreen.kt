@@ -26,6 +26,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -46,12 +48,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.micahnyabuto.snap2pdf.R
+import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -229,7 +236,7 @@ fun SettingsScreen(
                     Text("Request a feature")
                     Icon(
                         imageVector = Icons.Default.NavigateNext,
-                        contentDescription = "Privacy"
+                        contentDescription = "Privacy" // Consider changing to "Request feature"
                     )
 
                 }
@@ -359,56 +366,103 @@ fun AboutDialog(
 
 @Composable
 fun RequestFeatureDialog(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    phoneNumber: String = "+254769782503"
 ){
+    val context = LocalContext.current
     var message by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+
+
+
+
+
+
+    // LaunchedEffect to handle the message sending logic
+    // Triggers when isLoading becomes true
+    if (isLoading) {
+        LaunchedEffect(Unit) {
+            delay(1000) // Simulate network delay or give UI time to update
+            val intent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                    "https://wa.me/${phoneNumber.removePrefix("+")}?text=${Uri.encode(message)}"
+                )
+            )
+            context.startActivity(intent)
+            isLoading = false // Reset loading state
+            onDismiss()     // Dismiss dialog after sending
+        }
+    }
+
     AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = {
-            Column {
-                Text("Send Message",
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Spacer(Modifier.height(8.dp))
-
-                OutlinedTextField(
-                    value = message,
-                    onValueChange = {message = it},
-                    modifier = Modifier.fillMaxWidth()
-                        .height(150.dp),
-                    placeholder = {Text("Type your message...",
-                        style = MaterialTheme.typography.bodyMedium)},
-                    shape = RoundedCornerShape(12.dp),
-                    maxLines = 4,
-                    colors = OutlinedTextFieldDefaults.colors(
-                        focusedContainerColor = Color.Transparent,
-                        unfocusedContainerColor = Color.Transparent,
-                        disabledContainerColor = Color.Transparent,
-                        focusedBorderColor = Color.LightGray,
-                        unfocusedBorderColor = Color.LightGray,
-                        disabledBorderColor = Color.Transparent
-                    )
-
-                )
+        onDismissRequest = { 
+            if (!isLoading) { // Prevent dismissal while loading if desired
+                onDismiss() 
             }
+        },
+        title = {
+            Text("Send Message", style = MaterialTheme.typography.titleMedium)
+        },
+        text = {
+            // Text field for user input
+            OutlinedTextField(
+                value = message,
+                onValueChange = {message = it},
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp), // Consider using Modifier.defaultMinSize(minHeight = 150.dp) for better flexibility
+                placeholder = {Text("Type your message...", style = MaterialTheme.typography.bodyMedium)},
+                textStyle = TextStyle(
+                    fontSize = 14.sp
+                ),
+                shape = RoundedCornerShape(12.dp),
+                maxLines = 4,
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    disabledContainerColor = Color.Transparent,
+                    focusedBorderColor = Color.LightGray,
+                    unfocusedBorderColor = Color.LightGray,
+                    disabledBorderColor = Color.Transparent
+                ),
+                enabled = !isLoading // Disable text field while loading
+            )
         },
         confirmButton = {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth(), // Ensure buttons take full width for arrangement
+                horizontalArrangement = Arrangement.End, // Align buttons to the end
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                TextButton(onClick = { onDismiss() }) {
+                TextButton(
+                    onClick = { 
+                        if (!isLoading) onDismiss() 
+                    },
+                    enabled = !isLoading // Disable while loading
+                ) {
                     Text("Cancel")
                 }
                 Spacer(Modifier.width(8.dp))
-                Button(onClick = { onDismiss() }) {
-                    Text("Send")
+
+                if (isLoading) {
+                    CircularProgressIndicator(
+                        modifier = Modifier.size(24.dp),
+                        strokeWidth = 2.dp
+                    )
+                } else {
+                    Button(
+                        onClick = {
+                            if (message.isNotBlank()) {
+                                isLoading = true // This will trigger the LaunchedEffect
+                            }
+                        },
+                        enabled = message.isNotBlank() // Enable only if there is a message
+                    ) {
+                        Text("Send")
+                    }
                 }
             }
-
         }
-
     )
-
 }
-
