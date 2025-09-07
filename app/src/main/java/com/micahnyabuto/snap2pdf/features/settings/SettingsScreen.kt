@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState // Added import
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll // Added import
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Info
@@ -48,10 +50,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -60,6 +60,7 @@ import androidx.compose.ui.unit.sp
 import com.micahnyabuto.snap2pdf.R
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
+import androidx.core.net.toUri
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,7 +101,8 @@ fun SettingsScreen(
             modifier = Modifier
                 .padding(innerPadding)
                 .padding(12.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()), // Added verticalScroll
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             // Dark mode
@@ -187,7 +189,13 @@ fun SettingsScreen(
             // Privacy
             Card(
                 modifier = Modifier.fillMaxWidth()
-                    .clickable {},
+                    .clickable {
+                        val intent = Intent(
+                            Intent.ACTION_VIEW,
+                            "https://snap2pdf-privacy.netlify.app/".toUri()
+                        )
+                        context.startActivity(intent)
+                    },
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant
@@ -198,17 +206,22 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Privacy Policy")
-                        Icon(
-                            imageVector = Icons.Default.PrivacyTip,
-                            contentDescription = "Privacy"
-                        )
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Text("Privacy Policy")
+                            Icon(
+                                imageVector = Icons.Default.PrivacyTip,
+                                contentDescription = "Privacy"
+                            )
 
+                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text("Our terms and conditions",
+                            style = MaterialTheme.typography.bodySmall)
                     }
                 }
             }
@@ -228,6 +241,7 @@ fun SettingsScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                 ){
+
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -258,7 +272,7 @@ fun SettingsScreen(
                         IconButton(onClick = {
                             val intent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("https://x.com/Snap_2PDF?t=y67fbcpCWyz45yf_Z_w_Lg&s=09")
+                                "https://x.com/Snap_2PDF?t=y67fbcpCWyz45yf_Z_w_Lg&s=09".toUri()
                             )
                             context.startActivity(intent)
                         }) {
@@ -270,7 +284,7 @@ fun SettingsScreen(
 
                             )
                         }
-                        Text("Follow us on Twitter")
+                        Text("Follow us on X")
                     }
                     Row(
                         modifier = Modifier.fillMaxWidth()
@@ -280,7 +294,7 @@ fun SettingsScreen(
                         IconButton(onClick = {
                             val intent = Intent(
                                 Intent.ACTION_VIEW,
-                                Uri.parse("mailto:atembamicah@gmail.com")
+                                "mailto:atembamicah@gmail.com".toUri()
                             )
                             context.startActivity(intent)
                         }) {
@@ -372,11 +386,6 @@ fun RequestFeatureDialog(
     val context = LocalContext.current
     var message by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
-
-
-
-
-
 
     // LaunchedEffect to handle the message sending logic
     // Triggers when isLoading becomes true
