@@ -35,7 +35,7 @@ fun SplashScreen(
                 inclusive = true
             }
         }
-    }
+     }
 
     Box(
         modifier = Modifier.fillMaxSize()

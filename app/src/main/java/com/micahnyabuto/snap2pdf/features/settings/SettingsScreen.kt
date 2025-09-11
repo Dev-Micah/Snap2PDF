@@ -2,6 +2,7 @@ package com.micahnyabuto.snap2pdf.features.settings
 
 import android.content.Intent
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -128,7 +129,13 @@ fun SettingsScreen(
                 ) {
                     Text("Rate us")
                     IconButton(
-                        onClick = { /* Handle rate us action */ }
+                        onClick = {
+                            Toast.makeText(
+                                context,
+                                "Coming soon",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Star,
@@ -147,7 +154,13 @@ fun SettingsScreen(
                 ) {
                     Text("Share app with friends")
                     IconButton(
-                        onClick = { /* Handle share action */ }
+                        onClick = {
+                            Toast.makeText(
+                                context,
+                                "Coming soon",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     ) {
                         Icon(
                             imageVector = Icons.Default.Share,

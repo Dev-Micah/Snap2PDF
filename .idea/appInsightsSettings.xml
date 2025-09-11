@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.micahnyabuto.snap2pdf" />
+                  <option name="mobileSdkAppId" value="1:71216351628:android:8c9d42858ddf6350b66ea9" />
+                  <option name="projectId" value="snap2pdf-5bb71" />
+                  <option name="projectNumber" value="71216351628" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
