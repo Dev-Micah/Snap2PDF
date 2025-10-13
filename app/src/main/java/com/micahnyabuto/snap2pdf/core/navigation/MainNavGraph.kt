@@ -22,6 +22,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.DocumentScanner
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
@@ -157,10 +158,10 @@ fun MainNavGraph(
                             contentColor = MaterialTheme.colorScheme.onPrimary,
                             shape = RoundedCornerShape(50.dp),
                             modifier = Modifier.padding(10.dp)
-                                .offset(0.dp, -11.dp)
+                                .offset(0.dp, (-11).dp)
                         ) {
                             Icon(
-                                imageVector = Icons.Default.DocumentScanner,
+                                imageVector = Icons.Default.CameraAlt,
                                 contentDescription = "Add",
                                 tint = MaterialTheme.colorScheme.onPrimary
                             )

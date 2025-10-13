@@ -1,5 +1,6 @@
 package com.micahnyabuto.snap2pdf.utils
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import java.util.Calendar
@@ -9,7 +10,9 @@ import java.util.Calendar
 fun Greeting(){
     val greetingText = greetingMessage()
 
-    Text(text = greetingText)
+    Text(text = greetingText,
+        style = MaterialTheme.typography.titleMedium
+    )
 
 }
 
