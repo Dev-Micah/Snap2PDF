@@ -125,7 +125,7 @@ fun HomeScreen(
 
 
                 },
-                windowInsets = WindowInsets.statusBars // Explicitly set window insets
+                windowInsets = WindowInsets.statusBars
             )
         },
     ) { innerPadding ->
@@ -270,7 +270,7 @@ fun HelpAlertDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.applogo), // Replace with your app icon
+                    painter = painterResource(id = R.drawable.applogo),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier.size(32.dp)

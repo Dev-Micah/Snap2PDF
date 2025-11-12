@@ -103,10 +103,10 @@ fun SettingsScreen(
                 .padding(innerPadding)
                 .padding(12.dp)
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState()), // Added verticalScroll
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Dark mode
+
             SettingCard {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -120,7 +120,7 @@ fun SettingsScreen(
                     )
                 }
             }
-            // Rate us
+
             SettingCard {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -144,8 +144,6 @@ fun SettingsScreen(
                     }
                 }
             }
-
-            // Share
             SettingCard {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -169,7 +167,7 @@ fun SettingsScreen(
                     }
                 }
             }
-            // About
+
             Card(
                 modifier = Modifier.fillMaxWidth()
                     .clickable{
@@ -199,7 +197,6 @@ fun SettingsScreen(
                 }
             }
         }
-            // Privacy
             Card(
                 modifier = Modifier.fillMaxWidth()
                     .clickable {
@@ -238,7 +235,6 @@ fun SettingsScreen(
                     }
                 }
             }
-            //Request a feature
             Card(
                 modifier = Modifier.fillMaxWidth()
                     .clickable{
@@ -263,7 +259,7 @@ fun SettingsScreen(
                     Text("Request a feature")
                     Icon(
                         imageVector = Icons.Default.NavigateNext,
-                        contentDescription = "Privacy" // Consider changing to "Request feature"
+                        contentDescription = "Privacy"
                     )
 
                 }
@@ -355,7 +351,7 @@ fun AboutDialog(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.applogo), // Replace with your app icon
+                    painter = painterResource(id = R.drawable.applogo),
                     contentDescription = null,
                     tint = Color.Unspecified,
                     modifier = Modifier.size(32.dp)
@@ -400,26 +396,23 @@ fun RequestFeatureDialog(
     var message by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
-    // LaunchedEffect to handle the message sending logic
-    // Triggers when isLoading becomes true
+
     if (isLoading) {
         LaunchedEffect(Unit) {
-            delay(1000) // Simulate network delay or give UI time to update
+            delay(1000)
             val intent = Intent(
                 Intent.ACTION_VIEW,
-                Uri.parse(
-                    "https://wa.me/${phoneNumber.removePrefix("+")}?text=${Uri.encode(message)}"
-                )
+                "https://wa.me/${phoneNumber.removePrefix("+")}?text=${Uri.encode(message)}".toUri()
             )
             context.startActivity(intent)
-            isLoading = false // Reset loading state
-            onDismiss()     // Dismiss dialog after sending
+            isLoading = false
+            onDismiss()
         }
     }
 
     AlertDialog(
         onDismissRequest = { 
-            if (!isLoading) { // Prevent dismissal while loading if desired
+            if (!isLoading) {
                 onDismiss() 
             }
         },
@@ -427,13 +420,12 @@ fun RequestFeatureDialog(
             Text("Send Message", style = MaterialTheme.typography.titleMedium)
         },
         text = {
-            // Text field for user input
             OutlinedTextField(
                 value = message,
                 onValueChange = {message = it},
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(150.dp), // Consider using Modifier.defaultMinSize(minHeight = 150.dp) for better flexibility
+                    .height(150.dp),
                 placeholder = {Text("Type your message...", style = MaterialTheme.typography.bodyMedium)},
                 textStyle = TextStyle(
                     fontSize = 14.sp
@@ -448,20 +440,20 @@ fun RequestFeatureDialog(
                     unfocusedBorderColor = Color.LightGray,
                     disabledBorderColor = Color.Transparent
                 ),
-                enabled = !isLoading // Disable text field while loading
+                enabled = !isLoading
             )
         },
         confirmButton = {
             Row(
-                modifier = Modifier.fillMaxWidth(), // Ensure buttons take full width for arrangement
-                horizontalArrangement = Arrangement.End, // Align buttons to the end
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TextButton(
                     onClick = { 
                         if (!isLoading) onDismiss() 
                     },
-                    enabled = !isLoading // Disable while loading
+                    enabled = !isLoading
                 ) {
                     Text("Cancel")
                 }
@@ -476,10 +468,10 @@ fun RequestFeatureDialog(
                     Button(
                         onClick = {
                             if (message.isNotBlank()) {
-                                isLoading = true // This will trigger the LaunchedEffect
+                                isLoading = true
                             }
                         },
-                        enabled = message.isNotBlank() // Enable only if there is a message
+                        enabled = message.isNotBlank()
                     ) {
                         Text("Send")
                     }

@@ -4,11 +4,11 @@ package com.micahnyabuto.snap2pdf.features.search
 import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box // Added for centering the empty message
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize // Added for centering the empty message
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -70,7 +70,6 @@ fun SearchScreen(
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        // Small delay to ensure view is composed before requesting focus
         delay(200)
         focusRequester.requestFocus()
         keyboardController?.show()
@@ -97,8 +96,7 @@ fun SearchScreen(
         Column(
             modifier = Modifier
                 .padding(innerpadding)
-                .fillMaxSize(), // Changed to fillMaxSize to allow centering of empty message
-            // Removed verticalArrangement = Arrangement.Center, as it might conflict with LazyColumn or Box placement
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             OutlinedTextField(
@@ -109,7 +107,7 @@ fun SearchScreen(
                     .padding(
                         top = 6.dp,
                         start = 10.dp,
-                        end = 10.dp // Added end padding for consistency
+                        end = 10.dp
                     )
                     .fillMaxWidth()
                     .focusRequester(focusRequester),

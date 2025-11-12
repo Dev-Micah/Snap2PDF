@@ -75,7 +75,6 @@ fun MainNavGraph(
 
     val context = LocalContext.current
 
-    //scannerLauncher
     val scannerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartIntentSenderForResult()
     ) { result ->
@@ -110,7 +109,6 @@ fun MainNavGraph(
                     NavigationBar(
                         containerColor = MaterialTheme.colorScheme.surfaceVariant
                     ) {
-                        // Left side items (first two)
                         BottomNavigation.entries.take(1).forEach { navigationItem ->
                             NavigationBarItem(
                                 selected = currentRoute == navigationItem.route,
@@ -133,10 +131,8 @@ fun MainNavGraph(
                             )
                         }
 
-                        // Spacer in the middle for FAB
                         FloatingActionButton(
                             onClick = {
-                                // Launch the scanner
                                 val options = GmsDocumentScannerOptions.Builder()
                                     .setGalleryImportAllowed(true)
                                     .setPageLimit(5)
@@ -168,7 +164,6 @@ fun MainNavGraph(
 
                         }
 
-                        // Right side items (last two)
                         BottomNavigation.entries.takeLast(1).forEach { navigationItem ->
                             NavigationBarItem(
                                 selected = currentRoute == navigationItem.route,
