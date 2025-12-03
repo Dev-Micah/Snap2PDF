@@ -7,37 +7,37 @@
 
 <table>
   <tr>
-    <th>SplashScreen</th>
-    <th>Loading Screen</th>
-    <th>Market Screen</th>
+    <th>HomeScreen</th>
+    <th>Scanning Screen</th>
+    <th>Preview Screen</th>
   </tr>
   <tr>
     <td align="center">
-      <img src="" width="250"/>
+      <img src="https://github.com/user-attachments/assets/7a0bb09d-cdc1-4e29-9742-35248bbb73d9" width="250"/>
     </td>
     <td align="center">
-      <img src="" width="250"/>
+      <img src="https://github.com/user-attachments/assets/7c2fad46-d657-4280-9a11-0371f7a1d031" width="250"/>
     </td>
     <td align="center">
-      <img src=""  width="250"/>
+      <img src="https://github.com/user-attachments/assets/e1f4fa58-9e69-4ff3-b79e-ef2836b5097b"  width="250"/>
     </td>
   </tr>
 </table>
 <table>
   <tr>
+    <th>SavePDFScreen Screen</th>
     <th>Search Screen</th>
-    <th>Settings Screen</th>
-    <th>Error Screen</th>
+    <th>SettingsScreen</th>
   </tr>
   <tr>
     <td align="center">
-      <img  src="" width="250"/>
+      <img  src="https://github.com/user-attachments/assets/16f54f33-5341-4c68-847d-276383569be3" width="250"/>
     </td>
     <td align="center">
-      <img src="" width="250"/>
+      <img src="https://github.com/user-attachments/assets/faa32eea-e0c0-40b7-b6b1-7e7df5032588" width="250"/>
     </td>
     <td align="center">
-      <img src="" width="250"/>
+      <img src="https://github.com/user-attachments/assets/cae6652c-8493-4ac1-be0b-b37d85bc65bf" width="250"/>
     </td>
   </tr>
 </table>
